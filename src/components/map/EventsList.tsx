@@ -1,4 +1,8 @@
-const EventsList = ({ events, setHighlightedEvent }) => {
+import type { Event } from '@/types';
+
+type EventListProps = { events: Event[]; setHighlightedEvent: (event: Event) => void };
+
+const EventsList = ({ events, setHighlightedEvent }: EventListProps) => {
   return events.map((event) => (
     <div
       key={event.id}

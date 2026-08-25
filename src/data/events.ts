@@ -1,6 +1,8 @@
+import type { ActionFunctionArgs } from 'react-router';
+
 const API_URL = import.meta.env.VITE_EVENTS_API_URL;
 
-export const getAllEvents = async ({ request }) => {
+export const getAllEvents = async ({ request }: ActionFunctionArgs) => {
   if (!API_URL)
     throw new Error(
       'Something tells me you forgot to set the VITE_EVENTS_API_URL environment variable.'

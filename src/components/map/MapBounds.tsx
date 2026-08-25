@@ -1,11 +1,13 @@
+import type { EventsProp } from '@/types';
+import type { LatLngTuple } from 'leaflet';
 import { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 
-const MapBounds = ({ events }) => {
+const MapBounds = ({ events }: EventsProp) => {
   const map = useMap();
 
   useEffect(() => {
-    const bounds = events.map((event) => [event.latitude, event.longitude]);
+    const bounds: LatLngTuple[] = events.map((event) => [event.latitude, event.longitude]);
     map.fitBounds(bounds);
   }, [map, events]);
 

@@ -2,7 +2,9 @@ import { Link } from 'react-router';
 import { useAuth } from '@/contexts';
 import { menuList } from '@/utils';
 
-const SideBar = ({ drawerRef }) => {
+type SidebarProps = { drawerRef: React.RefObject<HTMLInputElement | null> };
+
+const SideBar = ({ drawerRef }: SidebarProps) => {
   const { isAuthenticated, logout } = useAuth();
 
   const closeSidebar = () => {

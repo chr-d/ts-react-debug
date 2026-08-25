@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
+import type { Event } from '@/types';
 
-const PanOnHover = ({ event }) => {
+const PanOnHover = ({ event }: { event: Event | null }) => {
   const map = useMap();
 
   useEffect(() => {

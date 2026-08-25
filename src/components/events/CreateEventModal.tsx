@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { useFetcher } from 'react-router';
-
-export default function CreateEventModal({ modalRef }) {
+type CreateEventModalProps = {
+  modalRef: React.RefObject<HTMLDialogElement | null>; // Change HTMLDialogElement to match your element (e.g., HTMLDivElement)
+};
+export default function CreateEventModal({ modalRef }: CreateEventModalProps) {
   const fetcher = useFetcher();
-  const formRef = useRef(null);
+  const formRef: React.Ref<HTMLFormElement> = useRef(null);
 
   const cleanUp = () => {
     formRef.current?.reset();

@@ -1,9 +1,10 @@
 import { redirect } from 'react-router';
+import type { ActionFunctionArgs } from 'react-router';
 import z from 'zod/v4';
 
 const API_URL = import.meta.env.VITE_EVENTS_API_URL;
 
-export const loginAction = async ({ request }) => {
+export const loginAction = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
     const email = formData.get('email');
@@ -36,12 +37,12 @@ export const loginAction = async ({ request }) => {
     };
   } catch (error) {
     return {
-      error: error.message
+      error: (error as Error).message
     };
   }
 };
 
-export const registerAction = async ({ request }) => {
+export const registerAction = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
     const name = formData.get('name');
@@ -71,8 +72,12 @@ export const registerAction = async ({ request }) => {
     }
     return redirect('/login');
   } catch (error) {
+    // Safer option with Type Narrowing instead of Type Assertion:
+
+    // const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    // return { error: message };
     return {
-      error: error.message
+      error: (error as Error).message
     };
   }
 };

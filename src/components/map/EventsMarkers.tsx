@@ -1,6 +1,7 @@
+import type { EventsProp } from '@/types';
 import { Marker, Popup } from 'react-leaflet';
 
-const EventsMarkers = ({ events }) => {
+const EventsMarkers = ({ events }: EventsProp) => {
   return events.map((event) => (
     <Marker key={event.id} position={[event.latitude, event.longitude]}>
       <Popup>

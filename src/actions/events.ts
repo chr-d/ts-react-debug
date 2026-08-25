@@ -1,8 +1,9 @@
+import type { ActionFunctionArgs } from 'react-router';
 import z from 'zod/v4';
 
 const API_URL = import.meta.env.VITE_EVENTS_API_URL;
 
-export const createEventAction = async ({ request }) => {
+export const createEventAction = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
     const title = formData.get('title');
@@ -28,13 +29,16 @@ export const createEventAction = async ({ request }) => {
         .min(-180, { message: 'Longitude must be ≥ -180°' })
         .max(180, { message: 'Longitude must be ≤ 180°' })
     });
+    // AI Hint:
+    // Since your schema uses z.coerce.number(), Zod is already smart enough to convert strings (and numbers) into numbers automatically.
+    // You can pass the raw FormDataEntryValue directly into safeParse without needing parseFloat at all
     const { data, error, success } = eventSchema.safeParse({
       title,
       description,
       date,
       location,
-      latitude: parseFloat(latitude),
-      longitude: parseFloat(longitude)
+      latitude,
+      longitude
     });
     if (!success) throw new Error(z.prettifyError(error));
     const organizerId = JSON.parse(localStorage.getItem('user') || '{}').id;
@@ -48,6 +52,6 @@ export const createEventAction = async ({ request }) => {
     });
     return { success: true, message: 'Event created successfully' };
   } catch (error) {
-    return { error: error.message };
+    return { error: (error as Error).message };
   }
 };

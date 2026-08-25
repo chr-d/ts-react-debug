@@ -3,9 +3,27 @@ import { AuthContext } from '.';
 
 const API_URL = import.meta.env.VITE_EVENTS_API_URL;
 
+type Profile = {
+  id: number;
+  name: string;
+  email: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type AuthContextValue = {
+  user: Profile | null;
+  token: string | null;
+  login: (token: string) => void;
+  logout: () => void;
+  isAuthenticated: boolean;
+  loading: boolean;
+} | null;
+
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,7 +38,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
           const error = await response.json();
           throw new Error(error.message || 'Failed to get profile');
         }
-        const profile = await response.json();
+        const profile: Profile = await response.json();
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(profile));
         setUser(profile);
@@ -30,7 +48,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     tryToLoginUser();
   }, [token]);
 
-  const login = (token) => {
+  const login = (token: string) => {
     setToken(token);
   };
 
@@ -56,3 +74,4 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export default AuthProvider;
+export type { AuthContextValue };

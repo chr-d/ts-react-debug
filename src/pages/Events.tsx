@@ -3,14 +3,15 @@ import { useLoaderData, useFetcher } from 'react-router';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { EventsList, EventsMarkers, MapBounds, PanOnHover } from '@/components';
 import 'leaflet/dist/leaflet.css';
+import type { Event } from '@/types';
 
 const Events = () => {
   const initialData = useLoaderData();
   const fetcher = useFetcher();
-  const [allEvents, setAllEvents] = useState(initialData.results);
+  const [allEvents, setAllEvents] = useState<Event[]>(initialData.results);
   const [currentPage, setCurrentPage] = useState(initialData.currentPage);
   const [hasNextPage, setHasNextPage] = useState(initialData.hasNextPage);
-  const [highlightedEvent, setHighlightedEvent] = useState(null);
+  const [highlightedEvent, setHighlightedEvent] = useState<Event | null>(null);
   const observerRef = useRef(null);
 
   const loadMoreEvents = useCallback(async () => {
